@@ -31,10 +31,10 @@ public class Main {
 
             return line.length();
 
-
         } catch (Exception exception){
             System.out.println("Caught error in main!");
         }
+
         return -1;
 
     }
