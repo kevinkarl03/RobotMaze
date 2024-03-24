@@ -17,7 +17,7 @@ public class Main {
         try{
             Scanner scanner = new Scanner(mazeFile);
             Maze maze = new Maze(scanner);
-            //maze.printMaze();
+            maze.printMaze();
         } catch (FileNotFoundException exception){
 
         }

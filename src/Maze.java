@@ -9,24 +9,25 @@ public class Maze {
 
     // Constructor
     public Maze(Scanner scanner) {
-        Position values = getSizeInit(scanner);
-        this.cols = values.getX();;
-        this.rows = values.getY();
-        System.out.println("ROWS: " + rows);
-        System.out.println("COLS: " + cols);
 
-        this.maze = new char[this.rows][this.cols];
+//        Position values = getSizeInit(scanner);
+//        this.cols = values.getX();
+//        this.rows = values.getY();
+//        System.out.println("ROWS: " + rows);
+//        System.out.println("COLS: " + cols);
+
+//        this.maze = new char[this.rows][this.cols];
+
+        this.maze = new char[10000][10000];
 
         /* Does not go inside of loop (Think that scanner is at end of file) */
         try {
             int i = 0;
-            while(scanner.hasNextLine()) {
+            while(scanner.hasNextLine()){
                 String buffer = scanner.nextLine();
-                this.cols = buffer.length();
                 System.out.println(buffer);
                 this.insertLine(buffer, i);
-                this.rows = i;
-                i++;
+
             }
         } catch (Exception exception) {
             System.out.println("Failed! Caught error! (maze constructor)");
