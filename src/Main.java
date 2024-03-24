@@ -1,62 +1,68 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        int rows = getRowsFromFile();
-        int cols = getColsFromFile();
 
+        /* NOTE: Program needs a correct file given as input maze */
+
+        /* Init maze: */
+        File mazeFile = new File(args[0]);
+        int rows = getRowsFromFile(mazeFile);
+        int cols = getColsFromFile(mazeFile);
+        //System.out.println("Rows: " + rows + "\nCols: " + cols);
 
         /* NOTE: Need to have correct size of rows and cols for specified input */
-        Maze maze = new Maze(rows, cols);
-
-        //maze.printMaze();
-
-        maze.inputMaze();
-        maze.printMaze();
-
-        System.out.println("Cols: " + maze.getNumColumns());
-        System.out.println("Rows: " + maze.getNumRows());
-    }
-
-    private static int getColsFromFile(){
-
         try{
-            Scanner input = new Scanner("C:\\Users\\Admin\\IdeaProjects\\Robot-maze\\src\\maze.txt");
+            Scanner scanner = new Scanner(mazeFile);
+            Maze maze = new Maze(scanner);
+            //maze.printMaze();
+        } catch (FileNotFoundException exception){
 
-            File file = new File(input.nextLine());
-
-            input = new Scanner(file);
-            String line = input.nextLine();
-
-            return line.length();
-
-        } catch (Exception exception){
-            System.out.println("Caught error in main!");
         }
 
-        return -1;
 
+
+
+        /* Init position in maze; */
+        Position position = new Position();
+        //System.out.println("Pos x: " + position.x + "\nPos y: " + position.y);
     }
 
-    private static int getRowsFromFile(){
-        try{
-            Scanner input = new Scanner("C:\\Users\\Admin\\IdeaProjects\\Robot-maze\\src\\maze.txt");
+    private static int getColsFromFile(File mazeFile) {
+        try {
+            Scanner input = new Scanner(mazeFile);
 
-            File file = new File(input.nextLine());
+            if (input.hasNextLine()) {
+                String line = input.nextLine();
+                input.close(); // Close the Scanner after reading
+                return line.length();
+            } else {
+                System.out.println("Maze file was empty!");
+                input.close(); // Close the Scanner in case of an empty file
+                return -1;
+            }
+        } catch (Exception exception) {
+            System.out.println("File not found: " + mazeFile.getPath());
+            return -1; // Indicates file not found
+        }
+    }
 
-            input = new Scanner(file);
-
+    private static int getRowsFromFile(File mazeFile) {
+        try {
             int count = 0;
+            Scanner input = new Scanner(mazeFile);
             while (input.hasNextLine()) {
-                String line = input.nextLine(); // Dummy variable used to read lines in file
+                String dummy = input.nextLine();
                 count++;
             }
             return count;
-        } catch (Exception exception){
-            System.out.println("Caught error in main!");
+        } catch (Exception exception) {
+            System.out.println("File not found: " + mazeFile.getPath());
+            return -1;
         }
-        return -1;
     }
+
 
 }

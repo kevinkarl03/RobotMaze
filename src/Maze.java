@@ -1,30 +1,64 @@
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 public class Maze {
-    /* Allocates new maze, default 1 by 1 */
     char[][] maze;
     int rows;
     int cols;
 
-    // Basic constructor for a by b maze
-    public Maze (int rows, int cols){
-        this.maze = new char[rows][cols];
-        this.rows = rows;
-        this.cols = cols;
-        initMaze(rows, cols);
+
+    // Constructor
+    public Maze(Scanner scanner) {
+        Position values = getSizeInit(scanner);
+        this.cols = values.getX();;
+        this.rows = values.getY();
+        System.out.println("ROWS: " + rows);
+        System.out.println("COLS: " + cols);
+
+        this.maze = new char[this.rows][this.cols];
+
+        /* Does not go inside of loop (Think that scanner is at end of file) */
+        try {
+            int i = 0;
+            while(scanner.hasNextLine()) {
+                String buffer = scanner.nextLine();
+                this.cols = buffer.length();
+                System.out.println(buffer);
+                this.insertLine(buffer, i);
+                this.rows = i;
+                i++;
+            }
+        } catch (Exception exception) {
+            System.out.println("Failed! Caught error! (maze constructor)");
+        }
     }
+
+
+    private Position getSizeInit(Scanner scanner){
+        try{
+            Position pos = new Position();
+            pos.x = 0;
+            pos.y = 0;
+            while (scanner.hasNextLine()){
+                String line = scanner.nextLine();
+                if(line.length() >= pos.x){
+                    pos.x = line.length();
+                }
+                pos.y++;
+            }
+            return pos;
+        } catch (Exception exception){
+            System.out.println("Error getRowsInit");
+        }
+        return new Position(-1, -1);
+    }
+
+
     public int getNumColumns(){
         return this.cols;
     }
     public int getNumRows(){
         return rows;
-    }
-    private void initMaze(int rows, int cols){
-        for(int i = 0 ; i < rows ; i++){
-            for(int j = 0 ; j < cols ; j++){
-                maze[i][j] = 'x';
-            }
-        }
     }
 
     public void printMaze(){
@@ -36,38 +70,12 @@ public class Maze {
         }
     }
 
-    public void inputMaze() {
-        try {
-            //System.out.print("Enter the file name with extension : ");
-            //Scanner input = new Scanner(System.in);
-            /*
-            *  C:\\Users\\Admin\\IdeaProjects\\Robot-maze\\src\\maze.txt
-            */
 
-            Scanner input = new Scanner("C:\\Users\\Admin\\IdeaProjects\\Robot-maze\\src\\maze.txt");
-
-            File file = new File(input.nextLine());
-
-            input = new Scanner(file);
-
-            int count = 0;
-            while (input.hasNextLine()) {
-
-                String line = input.nextLine();
-                insertLine(line, count);
-                count++;
-            }
-            input.close();
-
-
-
-        } catch (Exception exception) {
-            System.out.println("Failed! Caught error!");
-        }
-    }
     private void insertLine(String line, int count){
-        for(int i = 0 ; i < line.length() ; i++){
-            maze[count][i] = line.charAt(i);
+        for(int j = 0 ; j < line.length() ; j++){
+            maze[count][j] = line.charAt(j);
         }
     }
+
+
 }
