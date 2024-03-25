@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+            // TEST FOR GIT ON LAPTOP
         /* NOTE: Program needs a correct file given as input maze */
 
         /* Init maze: */
