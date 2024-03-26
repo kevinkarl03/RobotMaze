@@ -2,8 +2,7 @@ public class Position {
     int x, y; // Position coordinates
 
     public Position(){
-        x = 0;
-        y = 0;
+        this(0,0);
     }
     public Position(int a, int b){
         x = a;
@@ -29,9 +28,21 @@ public class Position {
         return new Position(this.x + 1, this.y);
     }
 
-    /*
-     * Equals, och hashcode functions later
-     *
-     *  */
+    public boolean equal(Object o){
+        return this.toString().equals(o.toString());
+    }
+    public int hashCode(){
+        return this.toString().hashCode();
+    }
 
+/* ---- Helper methods ---- */
+
+    public String toString(){
+        return "(" + getX() + ", " + getY() + ")";
+    }
+
+
+    public void printPos(){
+        System.out.println("Pos: (" + getX() + ", " + getY() + ")");
+    }
 }
