@@ -1,34 +1,40 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-            // TEST FOR GIT ON LAPTOP
-        /* NOTE: Program needs a correct file given as input maze */
-
         /* Init maze: */
         File mazeFile = new File(args[0]);
-        int rows = getRowsFromFile(mazeFile);
-        int cols = getColsFromFile(mazeFile);
-        //System.out.println("Rows: " + rows + "\nCols: " + cols);
+
+
 
         /* NOTE: Need to have correct size of rows and cols for specified input */
         try{
             Scanner scanner = new Scanner(mazeFile);
             Maze maze = new Maze(scanner);
             maze.printMaze();
-        } catch (FileNotFoundException exception){
 
+
+
+        } catch (FileNotFoundException exception){
+            System.err.println("File not found");
+        }
+        catch (NullPointerException nullPointerException){
+            System.err.println("Null pointer");
         }
 
 
-
-
         /* Init position in maze; */
-        Position position = new Position();
-        //System.out.println("Pos x: " + position.x + "\nPos y: " + position.y);
+        Position position = new Position(5,0);
+        Position position1 = new Position(5, 0);
+//        System.out.println("Equal: " + position.equal(position1));
+//        System.out.println("Hashcode: " + position1.hashCode());
+//        System.out.println("Hashcode: " + position.hashCode());
+
+
     }
 
     private static int getColsFromFile(File mazeFile) {

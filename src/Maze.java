@@ -1,59 +1,40 @@
-import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 public class Maze {
-    char[][] maze;
-    int rows;
-    int cols;
+    private List<List<Character>> maze;
+    private int rows;
+    private int cols;
 
 
     // Constructor
+    /*
+    * Gör så här:
+    * 1. Läs in alla olika lines till olika array lists
+    * 2. Sätt in dessa arraylists i en arraylist
+    * */
     public Maze(Scanner scanner) {
 
-//        Position values = getSizeInit(scanner);
-//        this.cols = values.getX();
-//        this.rows = values.getY();
-//        System.out.println("ROWS: " + rows);
-//        System.out.println("COLS: " + cols);
+        maze = new ArrayList<List<Character>>();
 
-//        this.maze = new char[this.rows][this.cols];
-
-        this.maze = new char[10000][10000];
-
-        /* Does not go inside of loop (Think that scanner is at end of file) */
-        try {
-            int i = 0;
-            while(scanner.hasNextLine()){
-                String buffer = scanner.nextLine();
-                System.out.println(buffer);
-                this.insertLine(buffer, i);
-
+        this.cols = 0;
+        this.rows = 0;
+        while(scanner.hasNextLine()){
+            ArrayList<Character> line = new ArrayList<>();
+            String buffer = scanner.nextLine();
+            if(buffer.length() > this.cols){
+                this.cols = buffer.length();
             }
-        } catch (Exception exception) {
-            System.out.println("Failed! Caught error! (maze constructor)");
-        }
-    }
+            this.rows++;
 
-
-    private Position getSizeInit(Scanner scanner){
-        try{
-            Position pos = new Position();
-            pos.x = 0;
-            pos.y = 0;
-            while (scanner.hasNextLine()){
-                String line = scanner.nextLine();
-                if(line.length() >= pos.x){
-                    pos.x = line.length();
-                }
-                pos.y++;
+            for(int i = 0 ; i < buffer.length() ; i++){
+                line.addLast(buffer.charAt(i));
             }
-            return pos;
-        } catch (Exception exception){
-            System.out.println("Error getRowsInit");
-        }
-        return new Position(-1, -1);
-    }
+            maze.addLast(line);
 
+        }
+        System.out.println("Cols: " + this.cols + " Rows: " + this.rows);
+    }
 
     public int getNumColumns(){
         return this.cols;
@@ -63,20 +44,52 @@ public class Maze {
     }
 
     public void printMaze(){
+
         for(int i = 0 ; i < this.rows ; i++){
+
+            List<Character> list = maze.get(i);
+
             for(int j = 0 ; j < this.cols ; j++){
-                System.out.print(this.maze[i][j]);
+                System.out.print(list.get(j));
             }
             System.out.println();
         }
     }
 
-
-    private void insertLine(String line, int count){
-        for(int j = 0 ; j < line.length() ; j++){
-            maze[count][j] = line.charAt(j);
+    public Position getStart() {
+        for (int i = 0; i < this.rows; i++) {
+            List<Character> list = maze.get(i);
+            for (int j = 0; j < this.cols; j++) {
+                if(list.get(j)=='S'){
+                    return new Position(i,j);
+                }
+            }
         }
+        return new Position(-1,-1);
     }
+    public boolean isGoal(Position pos){
+        try{
+            if(maze.get(pos.getY()).get(pos.getX()) == 'G'){
+                return true;
+            }
+        } catch (IndexOutOfBoundsException index){
+            System.err.println("Index out of bound");
+            return false;
+        }
 
+        return false;
+    }
+    public boolean isMovable(Position pos){
+        int x = pos.getX();
+        int y = pos.getY();
+        if(x >= 0 && y >= 0){
+            if(x < this.cols && y < this.rows){
+                if(maze.get(y).get(x) != '*'){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }
