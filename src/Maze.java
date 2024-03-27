@@ -8,32 +8,44 @@ public class Maze {
 
 
     // Constructor
-    /*
-    * Gör så här:
-    * 1. Läs in alla olika lines till olika array lists
-    * 2. Sätt in dessa arraylists i en arraylist
-    * */
     public Maze(Scanner scanner) {
 
-        maze = new ArrayList<List<Character>>();
+        try {
+            boolean foundStart = false;
+            boolean foundGoal = false;
+            maze = new ArrayList<>();
 
-        this.cols = 0;
-        this.rows = 0;
-        while(scanner.hasNextLine()){
-            ArrayList<Character> line = new ArrayList<>();
-            String buffer = scanner.nextLine();
-            if(buffer.length() > this.cols){
-                this.cols = buffer.length();
+            this.cols = 0;
+            this.rows = 0;
+            while (scanner.hasNextLine()) {
+                ArrayList<Character> line = new ArrayList<>();
+                String buffer = scanner.nextLine();
+                if (buffer.length() > this.cols) {
+                    this.cols = buffer.length();
+                }
+                this.rows++;
+
+                for (int i = 0; i < buffer.length(); i++) {
+                    line.addLast(buffer.charAt(i));
+                    if(buffer.charAt(i) == 'S'){
+                        foundStart = true;
+                    }
+                    if(buffer.charAt(i) == 'G'){
+                        foundGoal = true;
+                    }
+                }
+                maze.addLast(line);
+
             }
-            this.rows++;
-
-            for(int i = 0 ; i < buffer.length() ; i++){
-                line.addLast(buffer.charAt(i));
+            if(!foundStart || !foundGoal){
+                throw new Exception("Maze dont have all necessary elements");
             }
-            maze.addLast(line);
 
+        } catch (Exception exception){
+            System.err.println(exception);
+            System.exit(-1); // MIGHT BE WRONG WAY TO EXIT
         }
-        System.out.println("Cols: " + this.cols + " Rows: " + this.rows);
+
     }
 
     public int getNumColumns(){
@@ -43,25 +55,14 @@ public class Maze {
         return rows;
     }
 
-    public void printMaze(){
 
-        for(int i = 0 ; i < this.rows ; i++){
-
-            List<Character> list = maze.get(i);
-
-            for(int j = 0 ; j < this.cols ; j++){
-                System.out.print(list.get(j));
-            }
-            System.out.println();
-        }
-    }
 
     public Position getStart() {
-        for (int i = 0; i < this.rows; i++) {
+        for (int i = 0; i < this.getNumRows(); i++) {
             List<Character> list = maze.get(i);
-            for (int j = 0; j < this.cols; j++) {
-                if(list.get(j)=='S'){
-                    return new Position(i,j);
+            for (int j = 0; j < this.getNumColumns(); j++) {
+                if(list.get(j)== 'S'){
+                    return new Position(j,i);
                 }
             }
         }
@@ -83,13 +84,25 @@ public class Maze {
         int x = pos.getX();
         int y = pos.getY();
         if(x >= 0 && y >= 0){
-            if(x < this.cols && y < this.rows){
-                if(maze.get(y).get(x) != '*'){
-                    return true;
-                }
+            if(x < this.getNumColumns() && y < this.getNumRows()){
+                return maze.get(y).get(x) == ' ' || maze.get(y).get(x) == 'G';
             }
         }
         return false;
+    }
+
+    /* --- For debugging and understanding */
+    public void printMaze(){
+
+        for(int i = 0 ; i < this.getNumRows() ; i++){
+
+            List<Character> list = maze.get(i);
+
+            for(int j = 0 ; j < this.getNumColumns() ; j++){
+                System.out.print(list.get(j));
+            }
+            System.out.println();
+        }
     }
 
 }

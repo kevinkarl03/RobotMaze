@@ -1,9 +1,6 @@
 public class Position {
     int x, y; // Position coordinates
 
-    public Position(){
-        this(0,0);
-    }
     public Position(int a, int b){
         x = a;
         y = b;
@@ -41,8 +38,8 @@ public class Position {
         return "(" + getX() + ", " + getY() + ")";
     }
 
-
     public void printPos(){
         System.out.println("Pos: (" + getX() + ", " + getY() + ")");
     }
+
 }
